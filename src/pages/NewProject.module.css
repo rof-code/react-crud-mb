@@ -1,0 +1,9 @@
+.newproject__container{
+    width: 450px;
+    margin: 0 auto;
+    padding:3em;
+}
+.newproject__container h1{
+    margin-bottom: .5em;
+    color:#7b7b7b;
+}

@@ -1,0 +1,25 @@
+.container{
+    max-width: 1200px;
+    display:flex;
+    justify-content: flex-start;
+    margin:0 auto;
+    flex-wrap: wrap;
+    width: 100vw;
+}
+
+.min-height{
+    min-height: 75vh;
+}
+.start{
+    justify-content: flex-start;
+}
+.column{
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+@media screen and (max-width:768px){
+    .container{
+        width: unset;
+    }
+}

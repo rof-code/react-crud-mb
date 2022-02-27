@@ -1,0 +1,10 @@
+.project__container{
+    padding: 2em;
+    width: 100%;
+}
+
+.title__container{
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 2em;
+}
