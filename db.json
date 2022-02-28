@@ -18,8 +18,21 @@
         "id": "2",
         "name": "Development"
       },
-      "cost": 0,
-      "services": [],
+      "cost": 4000,
+      "services": [
+        {
+          "name": "fix",
+          "cost": "2000",
+          "description": "fix",
+          "id": "eac7501e-ca02-492f-8b4a-891b93fc4c5f"
+        },
+        {
+          "name": "fix",
+          "cost": "2000",
+          "description": "fix",
+          "id": "c66f1105-a3e1-4d19-baba-3067144a6b1c"
+        }
+      ],
       "id": 2
     }
   ],

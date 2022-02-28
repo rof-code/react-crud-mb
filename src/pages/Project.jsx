@@ -5,11 +5,14 @@ import Loading from "../components/layouts/Loading";
 import Container from "../components/layouts/Container";
 import ProjectForm from "../components/projects/ProjectForm";
 import Message from "../components/layouts/Message";
+import ServiceForm from "../components/service/ServiceForm";
+import { parse, v4 as uuidv4 } from "uuid";
 
 const Project = () => {
   const { id } = useParams();
   const [project, setProject] = useState([]);
   const [showProjectForm, setShowProjectForm] = useState(false);
+  const [showServiceForm, setShowServiceForm] = useState(false);
   const [message, setMessage] = useState("");
   const [type, setType] = useState("");
   useEffect(() => {
@@ -28,6 +31,7 @@ const Project = () => {
     }, 1500);
   }, [id]);
   function editPost(project) {
+    setMessage("");
     //Budget validation
     if (project.budget < project.cost) {
       //Message
@@ -54,8 +58,45 @@ const Project = () => {
         console.log(err);
       });
   }
+  function createService(project) {
+    setMessage("");
+    //Last service
+    const lastService = project.services[project.services.length - 1];
+    lastService.id = uuidv4();
+    const lastServiceCost = lastService.cost;
+    const newCost = parseFloat(project.cost) + parseFloat(lastServiceCost);
+    //maximum value validation
+
+    if (newCost > parseFloat(project.budget)) {
+      setMessage("Over budget, verify the service value");
+      setType("error");
+      project.services.pop();
+      return false;
+    }
+    // add service cost to total cost
+    project.cost = newCost;
+
+    //update project
+    fetch(`http://localhost:5000/projects/${project.id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(project),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   function toggleProjectForm() {
     setShowProjectForm(!showProjectForm);
+  }
+  function toggleServiceForm() {
+    setShowServiceForm(!showServiceForm);
   }
 
   return (
@@ -91,6 +132,25 @@ const Project = () => {
                 </div>
               )}
             </div>
+            <div className={styles.service__form_container}>
+              <h2>Add and service:</h2>
+              <button className={styles.btn} onClick={toggleServiceForm}>
+                {!showServiceForm ? "Add Service" : "Close"}
+              </button>
+              <div className={styles.project__info}>
+                {showServiceForm && (
+                  <ServiceForm
+                    handleSubmit={createService}
+                    btnText="Add service"
+                    projectData={project}
+                  />
+                )}
+              </div>
+            </div>
+            <h2>Services</h2>
+            <Container customClass="start">
+              <p>Services items</p>
+            </Container>
           </Container>
         </div>
       ) : (
